@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:700" rel="stylesheet">
+    <style>
+        html,
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            height: 100%;
+            position: relative;
+        }
+        
+        input {
+            font-size: 12px;
+        }
+        
+        h1 {
+            color: #525454;
+            font-size: 22px;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        
+        td {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #hide-listings,
+        #show-listings {
+            width: 48%;
+        }
+        
+        #map {
+            bottom: 0px;
+            height: 100%;
+            left: 362px;
+            position: absolute;
+            right: 0px;
+        }
+        
+        .gm-style-iw {
+            max-width: 400px;
+            top: .5 !important;
+            left: .5 !important;
+            padding-right: 0px;
+            margin-right: 0px;
+            box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+        }
+        
+        div.gm-style-iw {
+            margin: 0px;
+        }
+        
+        .iw-name {
+            font-family: 'Anton', sans-serif;
+	        font-size: 24px;
+	        font-style: normal;
+	        font-variant: normal;
+	        font-weight: 500;
+	        line-height: 26.4px;
+            background-color: orangered;
+            color: whitesmoke;
+            padding: 10px;
+            box-shadow: 0 2px 12px rgba(178, 178, 178, 0.6);
+        }
+        
+        .iw-phone {
+            padding-left: 15px;
+            padding-right: 30px;
+            padding-top: 10px;
+            font-family: 'Anton', sans-serif;
+	        font-size: 14px;
+	        font-style: normal;
+	        font-variant: normal;
+	        font-weight: 100;
+	        line-height: 20px;
+            color: orangered;
+            float: left;
+        }
+        
+        .iw-img {
+            float: right;
+        }
+        
+        .iw-rating {
+            padding-top: 10px;
+        }
+        
+        .options-box {
+            background: #fff;
+            border: 1px solid #999;
+            border-radius: 3px;
+            height: 100%;
+            line-height: 35px;
+            padding: 10px 10px 30px 10px;
+            text-align: left;
+            width: 340px;
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+    <script type='text/javascript' src='js/knockout-3.4.0.debug.js'></script>
+    <script src="js/oauth-signature.js"></script>
+    <!-- load Google Maps API -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="options-box">
+            <h1>Downtown Bakersfield <br> Food Spots</h1>
+                    <div>
+          <input id="show-listings" type="button" value="Show Listings" data-bind="click: showListings">
+          <input id="hide-listings" type="button" value="Hide Listings" data-bind="click: hideListings">
+        </div>
+            <div>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input style="width: 100%;" type="search" name="q" class="form-control" autocomplete="off" placeholder="Search..." data-bind="textInput: query, valueUpdate: 'keyup'"> </div>
+                </form>
+                <table>
+                    <tbody data-bind="foreach: filteredLocations()">
+                        <tr>
+                            <td data-bind="text: name, attr: {'id': + id}, click: placeMarker"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script src="js/app.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFQPMjViQVCzBoinpFFhgdzO9c9FRtq5k&v=3&callback=initMap">
+    </script>
+</body>
+
+</html>
