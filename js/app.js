@@ -1,12 +1,13 @@
 var map, largeInfoWindow;
 var yelpResults = [];
 var markers = ko.observable([]);
+var showAlert = true;
 
 // Locations Model - location object constructor
 var Location = function(name, id, latlng, yelpID) {
     var self = this;
     self.name = ko.observable(name);
-    self.id = ko.observable(id);
+    self.id = id;
     self.position = ko.observable(latlng);
     self.yelpID = ko.observable(yelpID);
 };
@@ -31,7 +32,7 @@ var LocationsViewModel = function() {
                 return match;
             });
         }
-    }, LocationsViewModel);
+    }, LocationsViewModel, this);
 
     self.locations.push(new Location('Curbside Kitchen', 0, {
         lat: 35.3763749,
@@ -75,7 +76,7 @@ function populateInfoWindow(marker, infowindow, locations) {
 
 var placeMarker = function(location) {
     populateInfoWindow(location.marker, largeInfowindow);
-    location.marker.setAnimation(google.maps.Animation.BOUNCE);
+    location.marker.setAnimation(google.maps.Animation.DROP);
     setTimeout(function() {
         location.marker.setAnimation(null);
     }, 750);
@@ -117,16 +118,18 @@ var yelpCall = function(location) {
         cache: true, // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
         dataType: 'jsonp',
         success: function(results) {
-            console.log(results);
-            console.log(results.image_url);
-            console.log(results.rating_img_url);
             // Do stuff with results
             location.marker.content = '<div class="iw-name">' + results.name + '</div>' + '<div class="iw-img">' + '<img src=' + results.image_url + '>' + '</div>' + '<div class="iw-phone">' + '<div>' + results.location.address[0] + '<br>' + '<div>' + results.location.city + ', ' + results.location.state_code + '</div>' + results.display_phone + '</div>' + '<div class="iw-rating">' + '<img src="' + results.rating_img_url + '"></img>' + '</div>' + '<br>';
         },
         //API error handling
         error: function() {
-            location.marker.content = '<div>' + 'Error: could not load Yelp API data.' + '</div>'
-            console.log('Yelp API data could not be retrieved');
+            if (showAlert==true)
+                {
+                    $("body").prepend('<div class="alert">' +
+                    'ERROR!: Yelp API data failed to load. Please press F5 to refresh and try again.' +
+                    '</div>');
+                }
+            showAlert = false;
         }
     };
     $.ajax(settings);
@@ -162,10 +165,13 @@ function initMap() {
         // Create an onclick event to open an infowindow at each marker.
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
+            this.setAnimation(google.maps.Animation.DROP);
         });
     }
     Window.onload = showListings();
 };
+
+
 
 
 for (var i = 0; i < locations().length; i++) {

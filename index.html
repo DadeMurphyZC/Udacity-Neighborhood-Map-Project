@@ -2,8 +2,13 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Udacity Neighborhood Map Project</title>
     <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:700" rel="stylesheet">
+    <script src="js/jquery-3.2.0.min.js"></script>
+    <script type='text/javascript' src='js/knockout-3.4.0.debug.js'></script>
+    <script src="js/oauth-signature.js"></script>
     <style>
         html,
         body {
@@ -12,32 +17,32 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .container {
             height: 100%;
             position: relative;
         }
-        
+
         input {
             font-size: 12px;
         }
-        
+
         h1 {
             color: #525454;
             font-size: 22px;
             margin: 0 0 10px 0;
             text-align: center;
         }
-        
+
         td {
             font-family: 'Poppins', sans-serif;
         }
-        
+
         #hide-listings,
         #show-listings {
             width: 48%;
         }
-        
+
         #map {
             bottom: 0px;
             height: 100%;
@@ -45,7 +50,7 @@
             position: absolute;
             right: 0px;
         }
-        
+
         .gm-style-iw {
             max-width: 400px;
             top: .5 !important;
@@ -54,46 +59,46 @@
             margin-right: 0px;
             box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
         }
-        
+
         div.gm-style-iw {
             margin: 0px;
         }
-        
+
         .iw-name {
             font-family: 'Anton', sans-serif;
-	        font-size: 24px;
-	        font-style: normal;
-	        font-variant: normal;
-	        font-weight: 500;
-	        line-height: 26.4px;
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 500;
+            line-height: 26.4px;
             background-color: orangered;
             color: whitesmoke;
             padding: 10px;
             box-shadow: 0 2px 12px rgba(178, 178, 178, 0.6);
         }
-        
+
         .iw-phone {
             padding-left: 15px;
             padding-right: 30px;
             padding-top: 10px;
             font-family: 'Anton', sans-serif;
-	        font-size: 14px;
-	        font-style: normal;
-	        font-variant: normal;
-	        font-weight: 100;
-	        line-height: 20px;
+            font-size: 14px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 100;
+            line-height: 20px;
             color: orangered;
             float: left;
         }
-        
+
         .iw-img {
             float: right;
         }
-        
+
         .iw-rating {
             padding-top: 10px;
         }
-        
+
         .options-box {
             background: #fff;
             border: 1px solid #999;
@@ -104,21 +109,27 @@
             text-align: left;
             width: 340px;
         }
-    </style>
-    <script src="js/jquery.min.js"></script>
-    <script type='text/javascript' src='js/knockout-3.4.0.debug.js'></script>
-    <script src="js/oauth-signature.js"></script>
-    <!-- load Google Maps API -->
-</head>
 
+        .alert-danger,
+        .alert-error {
+            color: #b94a48;
+            background-color: #f2dede;
+            border-color: #eed3d7;
+            padding-left: 10px;
+            padding-top: 10px;
+            height: 35px;
+            font-size: 25px;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
         <div class="options-box">
             <h1>Downtown Bakersfield <br> Food Spots</h1>
-                    <div>
-          <input id="show-listings" type="button" value="Show Listings" data-bind="click: showListings">
-          <input id="hide-listings" type="button" value="Hide Listings" data-bind="click: hideListings">
-        </div>
+            <div>
+                <input id="show-listings" type="button" value="Show Listings" data-bind="click: showListings">
+                <input id="hide-listings" type="button" value="Hide Listings" data-bind="click: hideListings">
+            </div>
             <div>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -136,7 +147,12 @@
         <div id="map"></div>
     </div>
     <script src="js/app.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFQPMjViQVCzBoinpFFhgdzO9c9FRtq5k&v=3&callback=initMap">
+    <script>
+        var googleMapsError = function() {
+            alert("ERROR: Google Maps API failed, map did not load. Please close this window and press 'F5' to refresh and try again.")
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFQPMjViQVCzBoinpFFhgdzO9c9FRtq5k&v=3&callback=initMap" onerror="googleMapsError()">
     </script>
 </body>
 
